@@ -29,30 +29,45 @@ ul {
 
 .main-header {
     display: flex; 
-    /* Centers the overall Flex content, but we override logo position below */
     justify-content: space-between; 
     align-items: center;
-    padding: 20px 10px;
+    padding: 20px 10px; /* Padding on the left/right edges */
     border-bottom: 1px solid #E0DEDC; 
     position: relative; 
 }
 
-/* New style to align the brand name and new logo */
+/* NEW: Brand Grouping to Control Flow */
+.header-brand-group {
+    display: flex; /* Makes the logo and title align nicely */
+    align-items: center;
+    
+    /* CRITICAL FIX: Stops the group from expanding right and colliding */
+    margin-right: auto;
+    
+    /* Adds the space from the left edge (compensates for header padding) */
+    margin-left: 10px;
+} /* <-- CORRECTED CLOSING BRACE */
+
+/* Logo Image Styling (Top Left) */
+.header-logo {
+    height: 160px; /* Reduced size */
+    width: 160px; /* Reduced size */
+    
+    /* Increased spacing between logo and title */
+    margin-right: 70px; 
+    
+    object-fit: contain;
+}
+
+/* Style for the Left-Offset Brand Name */
 .brand-name {
-    font-size: 2em; 
+    font-size: 4em; 
     font-family: 'Poppins', sans-serif; 
     font-weight: 700;
     color: #8B4513; 
     white-space: nowrap; 
-    margin-left: 10px; 
 }
 
-/* NEW: Logo Image Styling */
-.header-logo {
-    height: 30px; /* Adjust size of logo icon */
-    width: 30px;
-    margin-right: auto; /* Pushes the logo away from the brand name and towards the center */
-}
 
 /* Navigation is on the right */
 .main-nav {
@@ -76,6 +91,43 @@ ul {
     transform: translateY(-50%);
     font-size: 1.6em; 
     padding-left: 0;
+}
+
+/* --- NEW: Centered Banner Link Style (Positioned below header) --- */
+.cohort-link {
+    text-align: center; 
+    padding: 10px 0; 
+    margin: 10px 0; 
+    
+    /* ADDED FLAIR: Dashed border for attention */
+    border: 2px dashed #8B4513; /* Using a brown/earthy color */
+    background-color: #F0F0F0; 
+}
+
+.cohort-link a {
+    font-size: 0.8em; 
+    
+    color: #1e90ff; 
+    text-transform: none; 
+    font-weight: 700; /* Bolder text */
+    letter-spacing: normal; 
+    text-decoration: underline; 
+}
+
+.cohort-link a {
+    /* Smaller font size than header/hero */
+    font-size: 0.8em; 
+    
+    color: #1e90ff; /* Blue link color */
+    text-transform: none; 
+    font-weight: 500; 
+    letter-spacing: normal; 
+    white-space: normal; 
+    text-decoration: underline; 
+}
+
+.cohort-link a:hover {
+    color: #0d70da; 
 }
 
 /* --- 2. Hero Section (Large Text & Solid Blue Button) --- */
@@ -159,14 +211,13 @@ ul {
     font-size: 0.9em;
 }
 
-/* NEW: Image Styling for Product Boxes */
+/* Image Styling for Product Boxes */
 .product-image {
     width: 100%;
-    /* Ensures the image fills the space but keeps a square ratio for consistency */
     max-width: 90px; 
     height: 90px;
-    object-fit: cover; /* Crops the image to fit the square nicely */
-    border: 2px solid #8B4513; /* Solid border kept as requested */
+    object-fit: cover; 
+    border: 2px solid #8B4513; 
     border-radius: 8px;
     margin-bottom: 10px;
 }
