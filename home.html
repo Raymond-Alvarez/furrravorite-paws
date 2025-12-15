@@ -11,38 +11,55 @@
 
 <body>
 
-   <header class="main-header">
+    <header class="main-header">
     
+    <div id="header-greeting"></div> 
+
     <div class="header-brand-group">
         <img src="image/furrravorite-paws-logo.png" alt="Furrravorite Paws Logo" class="header-logo">
         <h1 class="brand-name">FURRRAVORITE PAWS</h1>
     </div>
 
     <nav class="main-nav">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#shop">Shop</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
-        </nav>
-        
-        <a href="#cart" aria-label="Shopping Cart" class="cart-icon">🛒</a> 
-    </header>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </nav>
+    
+    <a href="#cart" aria-label="Shopping Cart" class="cart-icon">🛒</a> 
+</header>
 
     <main>
         
-        <div class="cohort-link">
+    <div class="cohort-link">
             <a href="https://erojascornejo10-tech.github.io/the-boxing-zone/boxing.html" target="_blank">
                  &lt;--- Check out my fellow student's awesome work! ---&gt;
             </a>
-        </div>
+    </div>
         
-        <section class="hero-section">
-            <h2 class="hero-title">Chic Accessories for Pets</h2>
-            <a href="#shop-now" class="shop-now-btn">Shop Now</a>
-        </section>
+        <div class="hero-flex-container"> 
 
-        <section class="product-section">
+            <section class="hero-section">
+                <h2 class="hero-title">Chic Accessories for Pets</h2>
+                <a href="#shop-now" class="shop-now-btn">Shop Now</a>
+                
+                </section>
+
+            <div id="subscription-form-container" class="form-hidden"> 
+                
+                <h3>Subscribe to Furrravorite Paws Newsletter</h3>
+                <p>Enter your email below for your free gift!</p>
+
+                <div class="email-input-group">
+                    <input type="email" id="email-input" placeholder="Your Email Address" required>
+                    <button id="subscribe-btn">Subscribe</button>
+                </div>
+
+                <p id="sub-message-output"></p>
+                
+            </div> </div> <section class="product-section">
             <h2 class="section-title">Best Sellers</h2>
             <div class="product-list">
                 
@@ -100,6 +117,12 @@
     <footer>
         <p>&copy; 2025 Furrravorite Paws</p>
     </footer>
+
+    <script>
+        // Internal JavaScript
+        console.log('hey from the home page!');
+    </script>
+    <script src="app.js"></script>
 
 </body>
 

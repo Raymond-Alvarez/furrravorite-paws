@@ -28,68 +28,69 @@ ul {
 /* --- 1. Header & Navigation (Left-Offset Layout) --- */
 
 .main-header {
+    /* Uses Flexbox to space items across the header row */
     display: flex; 
     justify-content: space-between; 
     align-items: center;
-    padding: 20px 10px; /* Padding on the left/right edges */
+    padding: 1.5% 1%; 
     border-bottom: 1px solid #E0DEDC; 
-    position: relative; 
 }
 
-/* NEW: Brand Grouping to Control Flow */
-.header-brand-group {
-    display: flex; /* Makes the logo and title align nicely */
-    align-items: center;
+/* 🎯 UPDATED: Greeting Styles (Far Left) */
+#header-greeting {
+    /* Styles to make it look like regular, non-highlighted text */
+    background-color: transparent; 
+    padding: 0; 
+    border-radius: 0; 
     
-    /* CRITICAL FIX: Stops the group from expanding right and colliding */
-    margin-right: auto;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #333333; 
     
-    /* Adds the space from the left edge (compensates for header padding) */
-    margin-left: 10px;
-} /* <-- CORRECTED CLOSING BRACE */
-
-/* Logo Image Styling (Top Left) */
-.header-logo {
-    height: 160px; /* Reduced size */
-    width: 160px; /* Reduced size */
-    
-    /* Increased spacing between logo and title */
-    margin-right: 70px; 
-    
-    object-fit: contain;
-}
-
-/* Style for the Left-Offset Brand Name */
-.brand-name {
-    font-size: 4em; 
-    font-family: 'Poppins', sans-serif; 
-    font-weight: 700;
-    color: #8B4513; 
+    /* Pushes it right from the far left, separates it from the logo group */
+    margin-right: 10px; 
+    margin-left: 10px; 
     white-space: nowrap; 
 }
 
+/* Brand Grouping (Logo and Title) */
+.header-brand-group {
+    display: flex; 
+    align-items: center;
+    /* Removed margin-right: auto to let .main-nav push itself out */
+    margin-left: 10px;
+} 
 
-/* Navigation is on the right */
+/* Logo Image Styling (Top Left) */
+.header-logo {
+    height: 10vw; 
+    width: 10vw; 
+    min-width: 50px; 
+    margin-right: 5vw;
+    object-fit: contain;
+}
+
+.brand-name {
+    font-size: 4vw; 
+}
+
+/* 🎯 FIX: Main Nav Positioning */
 .main-nav {
-    position: absolute;
-    right: 50px; 
-    top: 50%;
-    transform: translateY(-50%);
-    display: block; 
+    /* This pushes the nav links to the left, positioning them immediately after the logo group */
+    margin-right: auto; 
+    padding-left: 20px; /* Add some space between the logo group and the links */
 }
 
 .main-nav ul {
     display: flex;
-    gap: 15px; 
-    font-size: 0.9em;
+    gap: 1.5vw; 
+    font-size: 1.2vw; 
 }
 
+/* Cart Icon Styling */
 .cart-icon {
-    position: absolute;
-    right: 10px; 
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.6em; 
+    font-size: 2.2em; 
+    margin-left: 4vw; 
     padding-left: 0;
 }
 
@@ -98,31 +99,16 @@ ul {
     text-align: center; 
     padding: 10px 0; 
     margin: 10px 0; 
-    
-    /* ADDED FLAIR: Dashed border for attention */
-    border: 2px dashed #8B4513; /* Using a brown/earthy color */
+    border: 2px dashed #8B4513; 
     background-color: #F0F0F0; 
 }
 
 .cohort-link a {
     font-size: 0.8em; 
-    
     color: #1e90ff; 
     text-transform: none; 
-    font-weight: 700; /* Bolder text */
+    font-weight: 700; 
     letter-spacing: normal; 
-    text-decoration: underline; 
-}
-
-.cohort-link a {
-    /* Smaller font size than header/hero */
-    font-size: 0.8em; 
-    
-    color: #1e90ff; /* Blue link color */
-    text-transform: none; 
-    font-weight: 500; 
-    letter-spacing: normal; 
-    white-space: normal; 
     text-decoration: underline; 
 }
 
@@ -130,10 +116,22 @@ ul {
     color: #0d70da; 
 }
 
-/* --- 2. Hero Section (Large Text & Solid Blue Button) --- */
+/* --- 2. Hero Section (Left/Right Layout with Form) --- */
 
+/* FLEX CONTAINER TO MANAGE LEFT (Title) AND RIGHT (Form) COLUMNS */
+.hero-flex-container {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    padding: 40px 15px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
+
+/* This targets the left side (Title and Button) */
 .hero-section {
-    padding: 50px 15px 90px;
+    width: 60%; 
+    padding: 0; 
 }
 
 .hero-title {
@@ -148,11 +146,9 @@ ul {
 .shop-now-btn {
     display: inline-block;
     padding: 12px 25px;
-    
     border: 2px solid #1e90ff; 
     background-color: #1e90ff; 
     color: #F7F4F0; 
-    
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -166,6 +162,72 @@ ul {
     border-color: #1e90ff; 
     color: #1e90ff; 
 }
+
+/* ==================================== */
+/* NEWSLETTER FORM STYLES (The Right Column) */
+/* ==================================== */
+
+#subscription-form-container {
+    width: 35%; 
+    padding: 20px;
+    
+    /* MODIFICATION: Thinner Border */
+    border: 1px solid #CFCFCE; 
+    
+    border-radius: 8px;
+    background-color: #fefefe;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+    margin-left: 20px; 
+}
+
+/* Style the Input Group */
+.email-input-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#email-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+#subscribe-btn {
+    padding: 10px 15px;
+    background-color: #1e90ff; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#subscribe-btn:hover {
+    background-color: #0d70da;
+}
+
+/* HIDES THE FORM AND SETS UP THE TRANSITION */
+.form-hidden {
+    opacity: 0; 
+    transition: opacity 1.5s ease-in; 
+}
+
+/* CLASS TO BE ADDED BY JAVASCRIPT to make it visible */
+.form-visible {
+    opacity: 1; 
+}
+
+/* Style for the success/error message output */
+#sub-message-output {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
 
 /* --- 3. Product & Category Sections (Grid Layout) --- */
 
@@ -234,4 +296,42 @@ footer {
 
 footer p {
     margin: 0; 
+}
+
+/* --- Media Query for Smaller Screens (e.g., Tablets and Phones) --- */
+@media screen and (max-width: 768px) {
+    
+    /* A. Stop the Logo/Title from being too big */
+    .brand-name {
+        font-size: 1.5em; 
+    }
+    
+    /* Hide the Greeting on small screens */
+    #header-greeting {
+        display: none; 
+    }
+    
+    /* CRITICAL MOBILE FIX: Stack the Hero/Form vertically */
+    .hero-flex-container {
+        flex-direction: column;
+        padding: 20px 15px; 
+    }
+    .hero-section, #subscription-form-container {
+        width: 100%; 
+        margin-left: 0; 
+        margin-bottom: 20px; 
+    }
+
+
+    /* B. Change the Navigation to Stack Vertically or Disappear */
+    .navbar {
+        flex-direction: column; 
+        align-items: center; 
+        width: 100%; 
+    }
+    
+    /* C. Optional: Shrink the margin of the icons/links */
+    .navbar a {
+        margin: 5px 0; 
+    }
 }
