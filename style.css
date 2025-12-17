@@ -67,8 +67,8 @@ ul {
 }
 
 .main-nav {
-    margin-right: auto;              /* Pushes the navigation links to the left, near the logo. */
-    padding-left: 20px;              /* Adds space between the logo group and the links. */
+    margin-left: auto;              /* Pushes the navigation links to the left, near the logo. */
+    padding-left: 30px;              /* Adds space between the logo group and the links. */
 }
 
 .main-nav ul {

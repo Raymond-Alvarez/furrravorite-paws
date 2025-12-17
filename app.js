@@ -11,9 +11,8 @@ const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Our
 // 🎯 Part 2: THE GREETING (Runs first)
 // -----------------------------------------------------------
 function initializeGreeting() { 
-    // Initial welcome alerts
-    alert('Welcome to my page'); 
-    alert('Nice to have you here'); 
+    // This combined alert uses \n to put the second sentence on a new line.
+    alert('Welcome to my page!\nNice to have you here.');
 
     // Get the name from the user
     userName = prompt('What is your name?'); 
