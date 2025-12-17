@@ -165,16 +165,45 @@ function playGuessingGame() {
     } // 9. The loop ends here once the guess matches the target.
 }
 
-
 // -----------------------------------------------------------
-// 🎯 Part 6: EXECUTION (No more setTimeout)
+// 🎯 Part 6: THE COLOR CHANGER
+// -----------------------------------------------------------
+function pickButtonColor() {
+    // 1. Ask the user for their favorite color
+    let userColor = prompt("What is your favorite color?");
+
+    // 2. If they hit cancel, we just stop
+    if (!userColor) return;
+
+    // 3. LOGIC: Create a temporary test to see if the color is valid
+    // We create a dummy "option" element in the computer's memory
+    let s = new Option().style;
+    s.color = userColor;
+
+    // 4. If s.color is still empty, it means the browser didn't recognize the word
+    if (s.color !== "") {
+        // VALID COLOR LOGIC
+        const subBtn = document.getElementById('subscribe-btn');
+        
+        if (subBtn) {
+            subBtn.style.backgroundColor = userColor; // Change button background
+            subBtn.style.color = "white";            // Invert text to white
+            alert("Snazzy! You got Rizz!");
+        }
+    } else {
+        // INVALID COLOR LOGIC
+        alert("Whoops! '" + userColor + "' isn't in my crayon box. I'll stick with the classic blue!");
+    }
+}
+// -----------------------------------------------------------
+// 🎯 Part 7: EXECUTION (No more setTimeout)
 // -----------------------------------------------------------
 
 // 1. Run the greeting and pop-ups.
 initializeGreeting();
-
-// 2. Run the form setup IMMEDIATELY. 
-// 3. Launch the game pop-ups.
+// 2. Launch the game pop-ups.
 playGuessingGame();
-// Now, as soon as the greeting finishes, the form is ready.
+// 3.Now, as soon as the greeting finishes, the form is ready.
 setupSubscriptionForm();
+// 4. NEW: The Color Picker
+pickButtonColor();    
