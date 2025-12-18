@@ -1,359 +1,322 @@
-/* --- Global Reset and Setup --- */
-/* This part ensures every browser starts with the same clean slate. */
-
+/* --- THE FOUNDATION (Global Reset) --- */
+/* The '*' is the universal selector. It clears out default browser settings 
+   that often cause unexpected gaps or sizing issues. */
 * {
-    box-sizing: border-box; /* Includes padding and borders in the element's total width/height. */
-    margin: 0;              /* Removes default outside spacing from all elements. */
-    padding: 0;             /* Removes default inside spacing from all elements. */
+    /* 'box-sizing: border-box' is the industry standard. It ensures that 
+       padding and borders are calculated INSIDE the width you set. 
+       Example: A 300px box stays 300px even if you add 20px of padding. */
+    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: 'Inter', sans-serif; /* Sets the primary font for the entire page. */
-    background-color: #F7F4F0;       /* Sets a soft, off-white background color. */
-    margin: 0;                       /* Ensures the body itself has no outside margin. */
-    padding: 0;                      /* Ensures the body itself has no inside padding. */
-    min-height: 100vh;               /* Makes the page at least as tall as the browser window. */
-    color: #333333;                  /* Sets the default text color to a dark grey. */
+    font-family: 'Inter', sans-serif;
+    background-color: #F7F4F0; /* Soft cream/bone color for a "boutique" feel */
+    color: #333333;
+    /* 'overflow-x: hidden' is a safety net. It clips any content that 
+       accidentally spills off the right edge, preventing "sideways scrolling." */
+    overflow-x: hidden;
 }
 
-a {
-    text-decoration: none;           /* Removes the default underline from all links. */
-    color: #333333;                  /* Sets the default link color to match the text. */
-    transition: color 0.3s;          /* Smoothly changes the color when the user hovers. */
-}
-
-ul {
-    list-style: none;                /* Removes bullet points from all unordered lists. */
-}
-
-/* --- 1. Header & Navigation (Left-Offset Layout) --- */
-
+/* --- THE HEADER (Top Bar Layout) --- */
+/* Flexbox makes it easy to align items in a row and distribute space. */
 .main-header {
-    display: flex;                   /* Turns the header into a Flexbox container for alignment. */
-    justify-content: space-between;  /* Pushes items to the far left and far right. */
-    align-items: center;             /* Centers all header items vertically. */
-    padding: 1.5% 1%;                /* Adds responsive spacing inside the header. */
-    border-bottom: 1px solid #E0DEDC; /* Adds a very thin line at the bottom of the header. */
+    display: flex;
+    /* 'align-items: center' keeps the hamburger, logo, and cart 
+       vertically centered regardless of their individual heights. */
+    align-items: center;
+    padding: 15px 20px;
+    
+    /* Layering logic: border + box-shadow creates a "floating" effect. */
+    border-bottom: 1px solid #E0DEDC;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+    
+    /* 'z-index' is the vertical stack order. 1001 ensures this stays 
+       on top of everything else as you scroll. */
+    z-index: 1001;
 }
 
-#header-greeting {
-    background-color: transparent;   /* Ensures no background color behind the greeting text. */
-    padding: 0;                      /* No extra space inside the greeting box. */
-    border-radius: 0;                /* Keeps the edges sharp (no rounding). */
-    font-size: 0.9em;                /* Makes the greeting text slightly smaller than default. */
-    font-weight: 600;                /* Makes the greeting text semi-bold. */
-    color: #333333;                  /* Sets the greeting text color. */
-    margin-right: 10px;              /* Adds a small gap to the right. */
-    margin-left: 10px;               /* Adds a small gap to the left. */
-    white-space: nowrap;             /* Prevents the greeting from breaking into two lines. */
+/* We group the burger and logo so they function as a single unit on the left. */
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 50px; /* Controls the horizontal breathing room between logo and menu. */
+    flex: 1;   /* Tells the browser to give this group 1 unit of available space. */
 }
-
-.header-brand-group {
-    display: flex;                   /* Allows the logo and brand name to sit side-by-side. */
-    align-items: center;             /* Vertically aligns the logo and name. */
-    margin-left: 10px;               /* Adds a small gap from the far left. */
-} 
 
 .header-logo {
-    height: 10vw;                    /* Height is 10% of the screen width (responsive). */
-    width: 10vw;                     /* Width is 10% of the screen width (responsive). */
-    min-width: 50px;                 /* Prevents the logo from getting too tiny on phones. */
-    margin-right: 5vw;               /* Adds space between the logo and the brand name. */
-    object-fit: contain;             /* Ensures the logo image isn't stretched or squished. */
+    height: 100px;
+    width: 100px;
+    /* 'object-fit: contain' ensures your image isn't squished; it maintains 
+       its original proportions within the 100x100 box. */
+    object-fit: contain;
+    /* 'transition' prepares the element for the spin animation. */
+    transition: transform 0.8s ease-in-out;
 }
 
 .brand-name {
-    font-size: 4vw;                  /* Text size grows and shrinks based on screen width. */
-}
-
-.main-nav {
-    margin-left: auto;              /* Pushes the navigation links to the left, near the logo. */
-    padding-left: 30px;              /* Adds space between the logo group and the links. */
-}
-
-.main-nav ul {
-    display: flex;
-    gap: 1.5vw;
-    font-size: 1rem; /* CHANGED from 1.2vw to 1rem */
+    flex: 2; /* Takes up 2 units of space, effectively centering the title. */
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    
+    /* FLUID TYPOGRAPHY: clamp(min, preferred, max). 
+       The font will scale with the screen width (4vw) but never go 
+       below 1.5rem or above 3.5rem. */
+    font-size: clamp(1.5rem, 4vw, 3.5rem); 
+    
+    white-space: nowrap; /* Keeps the name on one line unless forced otherwise. */
 }
 
 .cart-icon {
-    font-size: 1.8rem;  /* Slightly smaller than before */
-    margin-left: 15px; 
-    flex-shrink: 0;     /* 🧠 LOGIC: This tells the browser "Never squish the cart!" */
-    padding-right: 10px; /* Adds a safety "buffer" from the screen edge */
+    flex: 1; /* Matches the left group's flex to keep the center title balanced. */
+    text-align: right;
+    font-size: 1.8rem;
+    text-decoration: none;
+    cursor: pointer; 
 }
 
-/* --- Centered Banner Link Style --- */
-
+/* --- BANNER & GREETING --- */
 .cohort-link {
-    text-align: center;              /* Centers the text within this banner. */
-    padding: 10px 0;                 /* Adds top and bottom padding. */
-    margin: 10px 0;                  /* Adds space above and below the banner. */
-    border: 2px dashed #8B4513;      /* Adds a brown dashed border for a "coupon" look. */
-    background-color: #F0F0F0;       /* Sets a light grey background for the banner. */
+    text-align: center;
+    padding: 15px 0;
+    margin: 10px 0;
+    border: 2px dashed #8B4513; /* Creates a "stamped" or coupon-style look. */
+    background-color: #F0F0F0;
 }
 
 .cohort-link a {
-    font-size: 0.8em;                /* Keeps the link text relatively small. */
-    color: #1e90ff;                  /* Sets the link to a bright blue. */
-    text-transform: none;            /* Ensures text stays exactly as typed (no caps). */
-    font-weight: 700;                /* Makes the link text bold. */
-    letter-spacing: normal;          /* Keeps standard spacing between letters. */
-    text-decoration: underline;      /* Forces an underline on this specific link. */
+    color: #1e90ff !important; /* Blue color override for high visibility. */
+    font-weight: 700;
 }
 
-.cohort-link a:hover {
-    color: #0d70da;                  /* Makes the blue darker when the user hovers. */
+#greeting-container {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
-/* --- 2. Hero Section (Left/Right Layout with Form) --- */
+/* --- MOBILE MENU ANIMATION --- */
+.menu-icon {
+    display: flex;
+    flex-direction: column; /* Stacks the 3 menu lines vertically. */
+    gap: 5px; 
+    cursor: pointer;
+}
 
+.menu-icon span {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    /* 'cubic-bezier' gives the animation a "snappy" custom feel. */
+    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+
+/* CSS SELECTORS: nth-child targets specific lines to turn the menu into an 'X'. */
+.menu-icon.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.menu-icon.active span:nth-child(2) { opacity: 0; } /* Disappears the middle line. */
+.menu-icon.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+.main-nav {
+    display: none; /* Hidden by default; toggled via JavaScript. */
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    background-color: #F7F4F0;
+    padding: 30px 0;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* --- MENU LINK INTERACTION --- */
+
+/* This targets the links inside your mobile menu */
+.main-nav a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    /* Smooth transition for the color and background change */
+    transition: all 0.3s ease;
+}
+
+/* HOVER STATE: When the user's mouse or finger is over a link */
+.main-nav a:hover {
+    background-color: #F0EDE9; /* Slightly darker than the bone background */
+    color: #1e90ff;            /* Changes text to your brand blue */
+    padding-left: 30px;        /* Subtle 'slide' effect to the right */
+}
+
+/* ACTIVE/CLICK STATE: The moment the link is actually pressed */
+.main-nav a:active {
+    background-color: #E0DEDC;
+    transform: scale(0.98);    /* Makes the link look like it's being "pressed" in */
+}
+
+.main-nav.active { display: block; }
+
+/* --- HERO & NEWSLETTER LAYOUT --- */
 .hero-flex-container {
-    display: flex;                   /* Creates two columns: Title (left) and Form (right). */
-    justify-content: space-between;  /* Pushes the title and form to opposite ends. */
-    align-items: flex-start;         /* Aligns both columns to the top. */
-    padding: 40px 15px;              /* Adds vertical and horizontal padding. */
-    max-width: 1200px;               /* Prevents the container from getting too wide on huge screens. */
-    margin: 0 auto;                  /* Centers the whole container on the page. */
+    display: flex;
+    justify-content: space-between; /* Pushes text to the left and form to the right. */
+    align-items: flex-start;
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto; 
+    gap: 40px;
 }
 
-.hero-section {
-    width: 60%;                      /* The left column takes up 60% of the width. */
-    padding: 0;                      /* No extra padding inside this section. */
+.hero-section { flex: 2; } /* Gives the text section twice as much space as the form. */
+
+.hero-title { 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 2.5rem; 
+    margin-bottom: 50px; 
+    line-height: 1.1; /* Tighter line height for a bold, modern look. */
 }
 
-.hero-title {
-    font-family: 'Poppins', sans-serif; /* Uses Poppins for a bold, modern heading. */
-    font-size: 3em;                  /* Makes the title very large. */
-    line-height: 1;                  /* Tightens the space between lines of text. */
-    margin-bottom: 30px;             /* Adds space below the title. */
-    font-weight: 700;                /* Makes the title extra bold. */
+/* Combined styling for consistent button design across the site. */
+.shop-now-btn, #subscribe-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #1e90ff;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px; 
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
 }
-
-.shop-now-btn {
-    display: inline-block;           /* Allows the link to behave like a button box. */
-    padding: 12px 25px;              /* Adds space inside the button. */
-    border: 2px solid #1e90ff;       /* Adds a blue border. */
-    background-color: #1e90ff;       /* Fills the button with blue. */
-    color: #F7F4F0;                  /* Sets the text color to off-white. */
-    font-weight: bold;               /* Makes the button text bold. */
-    text-transform: uppercase;       /* Makes all letters capital. */
-    letter-spacing: 1px;             /* Adds a tiny bit of space between letters. */
-    transition: background-color 0.3s; /* Smoothly changes the color on hover. */
-    cursor: pointer;                 /* Shows a hand icon when hovering. */
-}
-
-.shop-now-btn:hover {
-    background-color: transparent;   /* Makes the button see-through on hover. */
-    border-color: #1e90ff;           /* Keeps the border blue. */
-    color: #1e90ff;                  /* Changes text color to blue. */
-}
-
-/* --- NEWSLETTER FORM STYLES (The Right Column) --- */
 
 #subscription-form-container {
-    width: 35%;                      /* The form takes up 35% of the container width. */
-    padding: 20px;                   /* Adds space inside the form. */
-    border: 1px solid #CFCFCE;       /* Adds the thin border you requested. */
-    border-radius: 8px;              /* Rounds the corners of the form. */
-    background-color: #fefefe;       /* Sets the form background to almost-pure white. */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Adds a very subtle shadow. */
-    margin-left: 20px;               /* Adds a gap between the title and the form. */
+    flex: 1;
+    min-width: 320px;
+    padding: 30px;
+    border: 1px solid #CFCFCE;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
 }
+
+/* Spacing out elements within the form for better readability. */
+#subscription-form-container h3 { margin-bottom: 15px; }
+#subscription-form-container p { margin-bottom: 20px; }
 
 .email-input-group {
-    display: flex;                   /* Puts the input and button in a row. */
-    gap: 10px;                       /* Adds a 10px gap between the input and button. */
-    margin-top: 15px;                /* Adds space above the input area. */
+    display: flex;
+    flex-wrap: wrap; /* Allows the button to wrap below the input on small screens. */
+    gap: 20px; 
+    margin-top: 15px;
 }
 
-#userEmail {
-    flex-grow: 1;                    /* Allows the input box to stretch to fill space. */
-    padding: 10px;                   /* Adds space inside the input box. */
-    border: 1px solid #ccc;          /* Adds a grey border around the input. */
-    border-radius: 4px;              /* Slightly rounds the input corners. */
-    font-size: 1em;                  /* Standard text size. */
+#userEmail { 
+    flex: 1 1 250px; /* Allows the input to grow but sets a base width of 250px. */
+    padding: 15px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
 }
 
-#subscribe-btn {
-    padding: 10px 15px;              /* Adds space inside the button. */
-    background-color: #1e90ff;       /* Blue background. */
-    color: white;                    /* White text. */
-    border: none;                    /* No border. */
-    border-radius: 4px;              /* Slightly rounds the button corners. */
-    font-weight: bold;               /* Bold text. */
-    cursor: pointer;                 /* Hand icon on hover. */
-    transition: background-color 0.3s; /* Smoothly darkens the blue on hover. */
-}
-
-#subscribe-btn:hover {
-    background-color: #0d70da;       /* Darker blue on hover. */
-}
-
-.error-message {
-    display: block;                  /* Ensures the error message is on its own line. */
-    font-size: 0.85em;               /* Smaller text for the error. */
-    color: red;                      /* Standard error color. */
-    margin-top: 5px;                 /* Space above the error. */
-    min-height: 1em;                 /* Prevents the layout from jumping when the text appears. */
-}
-
-/* 🎯 MODIFIED: REMOVED THE 1.5s TRANSITION */
-.form-hidden {
-    opacity: 1;                      /* Change from 0 to 1 so it starts visible. */
-    /* transition: opacity 1.5s ease-in; <--- REMOVED THIS LINE */
-}
-
-.form-visible {
-    opacity: 1;                      /* Keeps it visible when JS triggers. */
-}
-
-#sub-message-output {
-    margin-top: 15px;                /* Space above the success message. */
-    padding: 10px;                   /* Space inside the message box. */
-    border-radius: 4px;              /* Rounds the message box corners. */
-}
-
-/* --- 3. Product & Category Sections (Grid Layout) --- */
-
-.section-title {
-    font-family: 'Poppins', sans-serif; /* Bold font for section titles. */
-    text-align: center;              /* Centers the title. */
-    margin: 40px 0 30px;             /* Adds space above and below the title. */
-    font-size: 1.6em;                /* Makes the title stand out. */
-    font-weight: 600;                /* Semi-bold weight. */
-    text-transform: capitalize;      /* Capitals the first letter of each word. */
-}
-
+/* --- PRODUCT GRID SYSTEM --- */
 .product-list {
-    display: grid;                   /* Uses CSS Grid for a 3-column layout. */
-    grid-template-columns: repeat(3, 1fr); /* Creates 3 equal-width columns. */
-    gap: 15px;                       /* Adds a 15px gap between items. */
-    padding: 0 15px;                 /* Adds horizontal padding to the grid. */
-    text-align: center;              /* Centers the text inside the grid items. */
+    display: grid;
+    /* 'auto-fit' + 'minmax' handles the responsiveness. It creates as many 
+       250px columns as will fit, then fills the remaining space (1fr). */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
+
+
+.product-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%; /* Turning a square into a circle. */
+    border: 2px solid #8B4513;
+    margin-bottom: 15px;
+}
+
+/* --- SPECIAL EFFECTS --- */
+@keyframes logoSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* The '~' (General Sibling Combinator) triggers the logo spin 
+   even when you only hover over the hamburger menu icon. */
+.header-logo:hover, #hamburger-menu:hover ~ .header-logo {
+    animation: logoSpin 0.8s ease-in-out;
+}
+
+#backToTop {
+    display: none; 
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1e90ff;
+    color: white; 
+    border: none;
+    cursor: pointer;
+    border-radius: 50%; 
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    /* Stronger shadow to make it stand out as a "Floating Action Button." */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* --- RESPONSIVE DESIGN (Media Queries) --- */
+@media (max-width: 768px) {
+    /* Shrink the header components to fit smaller phone screens. */
+    .header-logo {
+        height: 60px;
+        width: 60px;
+    }
+
+    .header-left-group {
+        gap: 20px;
+    }
+
+    .brand-name { 
+        font-size: 1.8rem;
+        white-space: normal; /* Allows title to wrap to 2 lines if needed. */
+        line-height: 1.2;
+    }
+
+    .hero-flex-container {
+        flex-direction: column; /* Stacks text and form vertically. */
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .hero-title { 
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+    }
+
+    #subscription-form-container {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+/* --- INTERACTIVE HOVER EFFECTS --- */
 .product-item {
-    padding: 15px 5px;               /* Space inside the product card. */
-    border-radius: 8px;              /* Rounds the product card corners. */
-    background-color: #FFFFFF;       /* Pure white background for the cards. */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Adds a light shadow. */
-    transition: transform 0.3s;      /* Allows for the hover "lift" effect. */
-    height: auto;                    /* Height adjusts based on content. */
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    /* 'transition' makes the lift effect look like an animation, not a jump. */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    cursor: pointer;
 }
 
 .product-item:hover {
-    transform: translateY(-3px);     /* Lifts the card slightly when hovered. */
-}
-
-.product-item figure {
-    display: flex;                   /* Uses Flexbox to stack image and caption. */
-    flex-direction: column;          /* Stacks content vertically. */
-    align-items: center;             /* Centers content horizontally. */
-}
-
-.product-item figcaption {
-    margin-top: 5px;                 /* Space above the caption. */
-    font-weight: 600;                /* Semi-bold caption. */
-    font-size: 0.9em;                /* Slightly smaller text. */
-}
-
-.product-image {
-    width: 100%;                     /* Fills the figure container. */
-    max-width: 90px;                 /* Limits the size of the product image. */
-    height: 90px;                    /* Sets a consistent height. */
-    object-fit: cover;               /* Crops the image to fit the square without squishing. */
-    border: 2px solid #8B4513;       /* Adds the brown border. */
-    border-radius: 8px;              /* Rounds the image corners. */
-    margin-bottom: 10px;             /* Space below the image. */
-}
-
-/* --- Footer Styling --- */
-
-footer {
-    text-align: center;              /* Centers the footer text. */
-    padding: 20px 0;                 /* Adds vertical padding. */
-    border-top: 1px solid #E0DEDC;   /* Adds a thin line above the footer. */
-    font-size: 0.8em;                /* Smaller footer text. */
-    color: #A0522D;                  /* Sets text color to a sienna brown. */
-}
-
-footer p {
-    margin: 0;                       /* Removes default paragraph margin. */
-}
-
-/* --- Media Query for Smaller Screens --- */
-
-/* --- Media Query for Smaller Screens --- */
-@media screen and (max-width: 768px) {
-    
-    /* 1. Header Logic: Stack items and fix spacing */
-    .main-header {
-        flex-direction: column; 
-        gap: 15px;
-        padding: 20px 10px;
-        text-align: center;
-    }
-
-    /* 2. Brand/Logo: Use stable sizes instead of vw */
-    .brand-name {
-        font-size: 1.8rem; 
-    }
-
-    /* 3. Navigation: Fix the name from .navbar to .main-nav */
-    .main-nav {
-        margin: 0; 
-        padding: 0;
-    }
-
-    .main-nav ul {
-        justify-content: center;
-        gap: 20px;
-        font-size: 1.1rem; /* Keeps links big enough to tap with a thumb */
-    }
-
-    /* 4. Cart: Prevent it from being pushed off screen */
-    .cart-icon {
-        font-size: 1.5rem;
-        margin: 10px 0 0 0;
-        flex-shrink: 0;
-    }
-
-    /* 5. Greeting: Keep it hidden to save space */
-    #header-greeting {
-        display: none; 
-    }
-    
-    /* 6. Hero Section: Stacks Title and Form */
-    .hero-flex-container {
-        flex-direction: column;
-        padding: 20px 15px;
-    }
-
-    .hero-section, #subscription-form-container {
-        width: 100%; 
-        margin-left: 0;
-        margin-bottom: 30px;
-    }
-    /* --- Back to Top Button --- */
-#backToTop {
-    display: none;      /* 🧠 LOGIC: Hidden by default until we scroll */
-    position: fixed;   /* 🧠 LOGIC: Stays in the same spot on the screen */
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;       /* Ensures it sits on top of all other elements */
-    background-color: #1e90ff; /* Matches your brand blue */
-    color: white;
-    border: none;
-    padding: 15px 18px;
-    border-radius: 50%; /* Makes it a circle */
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: background-color 0.3s;
-}
-
-#backToTop:hover {
-    background-color: #0d70da;
+    /* 'translateY' moves the item up on the Y-axis. */
+    transform: translateY(-10px); 
+    /* Increasing the shadow on hover creates the illusion of physical lift. */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15); 
 }

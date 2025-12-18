@@ -1,209 +1,295 @@
-console.log('hey from the home page!');
-'use strict'; // Keeps our code "clean" by signaling errors for bad syntax.
+'use strict'; // Tells the browser: "Be strict! If I make a typo, tell me immediately."
 
 // -----------------------------------------------------------
 // 🎯 Part 1: THE GLOBAL TOOLS
 // -----------------------------------------------------------
-let userName = ''; // A container to hold the name we get from the user.
-const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Our email rulebook.
+
+// A "bucket" to hold the name so we can use it in different functions later.
+let userName = ''; 
+
+// A pattern that checks if a string looks like a real email (has @ and a dot).
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 
 
 // -----------------------------------------------------------
-// 🎯 Part 2: THE GREETING (Runs first)
+// 🎯 Part 2: THE GREETING
 // -----------------------------------------------------------
+
 function initializeGreeting() { 
-    // This combined alert uses \n to put the second sentence on a new line.
+    // Show a simple pop-up box when the page first loads.
     alert('Welcome to my page!\nNice to have you here.');
 
-    // Get the name from the user
+    // Ask the user for their name and save it in our "userName" bucket.
     userName = prompt('What is your name?'); 
     
-    // Get the hour and convert text to a number
+    // Ask for the hour and convert the text they type into a real number.
     let time = parseInt(prompt('What hour is it? (0-23)')); 
 
-    // --- REQUIREMENT: CHECK INPUT & SECOND CHANCE ---
+    // If they typed something that isn't a number, or a number like 99...
     if (isNaN(time) || time < 0 || time > 23) {
+        // Show an error message.
         alert("Whoa! That hour doesn't exist on Earth."); 
+        // Give them one more chance to type a real hour.
         time = parseInt(prompt('Please try again. Enter a number between 0 and 23:'));
     }
 
-    // Determine the time message (we removed the exclamation points here)
+    // Create a variable to hold our "Morning/Afternoon" message.
     let timeMessage; 
+    
+    // If it's 11am or earlier...
     if (time <= 11) { 
         timeMessage = 'Good Morning'; 
-    } else if (time <= 18) { 
-        timeMessage = 'Good Afternoon';
-    } else if (time < 24) { 
-        timeMessage = 'Good Evening';
-    } else { 
-        timeMessage = "Have a great day"; // Fallback if time is still weird
-    
+    } 
+    // If it's between 12pm and 6pm (18:00)...
+    else if (time <= 18) { 
+        timeMessage = 'Good Afternoon'; 
+    } 
+    // If it's 7pm or later...
+    else if (time < 24) { 
+        timeMessage = 'Good Evening'; 
+    } 
+    // If something weird happens, use this backup message.
+    else { 
+        timeMessage = "Have a great day"; 
     }
-    // Find the spot in the HTML to show the text
+
+    // Find the spot in the HTML where we want to write the greeting.
     const outputElement = document.getElementById('header-greeting'); 
+    // Find the container div we added in the main section.
+    const greetingContainer = document.getElementById('greeting-container');
     
+    // If we actually found that spot in the HTML...
     if (outputElement) { 
-        // --- LOGIC FIX: REPLACE "HELLO" WITH "WELCOME" ---
-        // We check if the name is valid. 
-        // If valid: "Welcome [Name]! " 
-        // If invalid/cancelled: "Welcome! "
+        // If the name isn't empty and they didn't hit 'Cancel'...
         let welcomePart = (userName && userName !== "null" && userName.trim() !== "") 
-            ? 'Welcome ' + userName + '! ' 
-            : 'Welcome! ';
+            ? 'Welcome ' + userName + '! '  // Use their name.
+            : 'Welcome! ';                  // Otherwise, just say "Welcome!"
         
-        // Combine them: "Welcome [Name]! Good Morning"
+        // Put the combined text (Name + Time Message) into the HTML spot.
         outputElement.textContent = welcomePart + timeMessage; 
+        
+        // Make the whole greeting area visible on the screen.
+        if (greetingContainer) {
+            greetingContainer.style.display = 'block';
+        }
     }
 }
 
 // -----------------------------------------------------------
-// 🎯 Part 3: INSTANT FORM SETUP (The Change is Here)
+// 🎯 Part 3: SETTING UP THE FORM
 // -----------------------------------------------------------
-function setupSubscriptionForm() { // Logic to prepare the form.
-    const formElement = document.getElementById('subscription-form-container'); // Finds the form container.
-    const subscribeButton = document.getElementById('subscribe-btn'); // Finds the button.
-    const emailInput = document.getElementById('userEmail'); // Finds the typing box.
-    const errorMessage = document.getElementById('emailError'); // Finds the error message spot.
 
-    // We still swap these classes so the CSS knows the form is now active, 
-    // but because we call this function immediately, it happens instantly.
-    formElement.classList.remove('form-hidden'); // Removes the "invisible" state.
-    formElement.classList.add('form-visible'); // Adds the "visible" state.
+function setupSubscriptionForm() { 
+    // Grab all the pieces of our newsletter form.
+    const formElement = document.getElementById('subscription-form-container'); 
+    const subscribeButton = document.getElementById('subscribe-btn'); 
+    const emailInput = document.getElementById('userEmail'); 
+    const errorMessage = document.getElementById('emailError'); 
 
-    // Sets up the typing checker (Real-time).
+    // If the form exists, make it show up by switching its CSS class.
+    if (formElement) {
+        formElement.classList.remove('form-hidden'); 
+        formElement.classList.add('form-visible'); 
+    }
+
+    // Listen to the user typing. Every time they press a key, check the email.
     emailInput.addEventListener('input', () => {
         runRealTimeValidation(emailInput, errorMessage);
     });
     
-    // Sets up the click checker (Final submission).
+    // Listen for when they click the "Subscribe" button.
     subscribeButton.addEventListener('click', processSubscription);
 }
 
 // -----------------------------------------------------------
-// 🎯 Part 4: THE CHECKERS (Validation)
+// 🎯 Part 4: CHECKING THE EMAIL
 // -----------------------------------------------------------
+
 function runRealTimeValidation(emailInput, errorMessage) { 
-    if (EMAIL_PATTERN.test(emailInput.value)) { // Does the text match the email rules?
-        emailInput.setCustomValidity(''); // Tell browser: "Everything is fine."
-        errorMessage.textContent = ''; // Hide error text.
+    // Check if what they typed matches our "email pattern" from Part 1.
+    if (EMAIL_PATTERN.test(emailInput.value)) { 
+        // If it's good, tell the browser the box is valid.
+        emailInput.setCustomValidity(''); 
+        // Clear out any old error messages.
+        errorMessage.textContent = ''; 
     } else {
+        // If it's bad, create an error message.
         const message = 'Please enter a valid email address.';
-        emailInput.setCustomValidity(message); // Tell browser: "This is a mistake."
-        errorMessage.textContent = message; // Show the error text.
-        errorMessage.style.color = 'red'; // Make it red.
+        // Tell the browser this box is "invalid" (this blocks the form).
+        emailInput.setCustomValidity(message); 
+        // Show the message to the user in red text.
+        errorMessage.textContent = message; 
+        errorMessage.style.color = 'red'; 
     }
 }
 
 function processSubscription(event) {
-    event.preventDefault(); // Stop the page from refreshing.
+    // Stop the page from refreshing (which is what forms usually do).
+    event.preventDefault(); 
     
+    // Get the email box and the place where the "Thank You" message goes.
     const emailInput = document.getElementById('userEmail');
     const email = emailInput.value; 
-    const outputArea = document.getElementById('sub-message-output');
+    const outputArea = document.getElementById('sub-message-output'); 
     
-    outputArea.textContent = ''; // Clear old messages.
+    // Clear any old messages.
+    outputArea.textContent = ''; 
     
-    if (!email || !EMAIL_PATTERN.test(email)) { // If empty OR wrong format.
+    // If the box is empty OR the email is typed wrong...
+    if (!email || !EMAIL_PATTERN.test(email)) { 
+        // Show an error and stop everything.
         outputArea.textContent = "Please enter a valid email address.";
         outputArea.style.color = 'red';
-        emailInput.reportValidity(); // Show the browser's error bubble.
-        return; // Stop the code here.
+        emailInput.reportValidity(); 
+        return; // This exits the function early.
     }
     
-    let confirmSubscribe = confirm("Subscribe " + email + "?"); // Ask for final confirmation.
+    // Pop up a box asking if they are sure.
+    let confirmSubscribe = confirm("Subscribe " + email + "?"); 
     
-    if (confirmSubscribe) { // If they click OK.
-        outputArea.textContent = "Thank you " + userName + "!";
+    // If they clicked "OK"...
+    if (confirmSubscribe) { 
+        // Show a thank you message using the name from earlier.
+        outputArea.textContent = "Thank you " + (userName || "Friend") + "!";
         outputArea.style.color = 'green';
-        emailInput.value = ''; // Clear the box.
-    } else { // If they click Cancel.
+        // Empty the email box so it looks like it was sent.
+        emailInput.value = ''; 
+    } else { 
+        // If they clicked "Cancel", show this instead.
         outputArea.textContent = 'Subscription canceled.';
         outputArea.style.color = 'orange';
     }
 }
 
 // -----------------------------------------------------------
-// 🎯 Part 5: THE MINI-GAME (Logic for Guessing)
+// 🎯 Part 5: THE GUESSING GAME
 // -----------------------------------------------------------
+
 function playGuessingGame() {
-    // 1. Math.random() picks a decimal. * 10 makes it 0-9. + 1 makes it 1-10.
-    // Math.floor() rounds it down to a whole number.
+    // Pick a random number between 1 and 10.
     const targetNumber = Math.floor(Math.random() * 10) + 1; 
+    let userGuess = 0; // Start the guess at 0.
+    let attempts = 0; // Start the try-counter at 0.
 
-    // 2. We set userGuess to 0 initially so it doesn't match the target yet.
-    let userGuess = 0;
-
-    // 3. We create a counter to track how many times they tried.
-    let attempts = 0;
-
-    // 4. WHILE LOOP: This says "Keep doing the code inside these brackets {} 
-    // as long as the guess is NOT EQUAL (!==) to the secret target number."
+    // Keep asking as long as their guess is NOT the right number.
     while (userGuess !== targetNumber) {
-        
-        // 5. Ask the user for a number and turn their text into a real number using parseInt.
-        userGuess = parseInt(prompt("GUESS THE NUMBER: I'm thinking of a number between 1 and 10. What is it?"));
+        // Ask for a guess and turn their text into a number.
+        userGuess = parseInt(prompt("GUESS THE NUMBER: 1 to 10. What is it?"));
 
-        // 6. CHECK: If the user clicked 'Cancel', userGuess becomes NaN (Not a Number).
+        // If they hit "Cancel", stop the game immediately.
         if (isNaN(userGuess)) {
-            alert("Game exited. Maybe next time!");
-            break; // This 'break' forces the loop to stop immediately so they aren't trapped.
+            alert("Game exited.");
+            break; 
         }
 
-        // 7. If they didn't quit, we add 1 to their total attempts.
+        // Add 1 to our "try-counter".
         attempts++; 
 
-        // 8. CONDITIONAL LOGIC: Provide feedback based on the guess.
+        // Give them a hint.
         if (userGuess < targetNumber) {
-            // Tell them they are too low. Because the guess is still wrong, the loop restarts.
-            alert("Too low! Try again.");
+            alert("Too low!"); 
         } else if (userGuess > targetNumber) {
-            // Tell them they are too high. The loop restarts.
-            alert("Too high! Try again.");
+            alert("Too high!"); 
         } else {
-            // If it's not too low or too high, it must be correct!
-            alert("CORRECT! The number was " + targetNumber + ". It took you " + attempts + " tries.");
+            // They got it!
+            alert("CORRECT! It took you " + attempts + " tries.");
         }
-    } // 9. The loop ends here once the guess matches the target.
+    } 
 }
 
 // -----------------------------------------------------------
-// 🎯 Part 6: THE COLOR CHANGER
+// 🎯 Part 6: CHANGING BUTTON COLORS
 // -----------------------------------------------------------
+
 function pickButtonColor() {
-    // 1. Ask the user for their favorite color
-    let userColor = prompt("What is your favorite color?");
+    // Ask for a color name.
+    let userColor = prompt("What is your favorite color for the subscribe button?");
 
-    // 2. If they hit cancel, we just stop
-    if (!userColor) return;
+    // If they hit cancel, just stop.
+    if (!userColor) return; 
 
-    // 3. LOGIC: Create a temporary test to see if the color is valid
-    // We create a dummy "option" element in the computer's memory
+    // Create a "test" style to see if the browser knows that color.
     let s = new Option().style;
     s.color = userColor;
 
-    // 4. If s.color is still empty, it means the browser didn't recognize the word
+    // If the color is real...
     if (s.color !== "") {
-        // VALID COLOR LOGIC
         const subBtn = document.getElementById('subscribe-btn');
-        
         if (subBtn) {
-            subBtn.style.backgroundColor = userColor; // Change button background
-            subBtn.style.color = "white";            // Invert text to white
-            alert("Snazzy! You got Rizz!");
+            // Change the button color to what they typed!
+            subBtn.style.backgroundColor = userColor; 
+            subBtn.style.color = "white"; 
         }
     } else {
-        // INVALID COLOR LOGIC
-        alert("Whoops! '" + userColor + "' isn't in my crayon box. I'll stick with the classic blue!");
+        // If they typed something fake like "burrito".
+        alert("I don't know that color!");
     }
 }
+
 // -----------------------------------------------------------
-// 🎯 Part 7: EXECUTION (No more setTimeout)
+// 🎯 Part 7: THE MENU AND BLUR
 // -----------------------------------------------------------
 
-// 1. Run the greeting and pop-ups.
+function setupGlobalMenu() {
+    // Get the hamburger icon, the menu, and the main content of the page.
+    const hamburger = document.getElementById('hamburger-menu');
+    const navMenu = document.getElementById('nav-menu');
+    const navLinks = document.querySelectorAll('.main-nav a');
+
+    // If the menu elements exist...
+    if (hamburger && navMenu) {
+        // When the hamburger is clicked...
+        hamburger.addEventListener('click', () => {
+            // Toggle the 'active' class (on/off).
+            const isMenuOpening = navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // For every link inside the menu...
+        navLinks.forEach(link => {
+            // If a link is clicked, close the menu and un-blur the page.
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                
+            });
+        });
+    }
+}
+
+// -----------------------------------------------------------
+// 🎯 Part 8: THE "BACK TO TOP" BUTTON
+// -----------------------------------------------------------
+
+function setupBackToTop() {
+    const topBtn = document.getElementById("backToTop");
+
+    // Every time the user scrolls the mouse...
+    window.onscroll = function() {
+        // If they have scrolled down more than 300 pixels...
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            // Show the button.
+            topBtn.style.display = "block"; 
+        } else {
+            // Otherwise, hide it.
+            topBtn.style.display = "none"; 
+        }
+    };
+
+    // When they click that button...
+    topBtn.onclick = function() {
+        // Roll the screen back to the very top smoothly.
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+}
+
+// -----------------------------------------------------------
+// 🎯 Part 9: THE ON SWITCHES
+// -----------------------------------------------------------
+
+// These lines tell the computer: "Run these functions right now!"
 initializeGreeting();
-// 2. Launch the game pop-ups.
 playGuessingGame();
-// 3.Now, as soon as the greeting finishes, the form is ready.
 setupSubscriptionForm();
-// 4. NEW: The Color Picker
-pickButtonColor();    
+pickButtonColor();
+setupBackToTop();
+setupGlobalMenu();
