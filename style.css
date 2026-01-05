@@ -215,14 +215,71 @@ body {
     border-radius: 4px; 
 }
 
-/* --- PRODUCT GRID SYSTEM --- */
-.product-list {
-    display: grid;
-    /* repeat(auto-fit...): Automatically decides how many columns fit. 
-       If the screen is wide, it shows 3-4. If narrow, it drops to 1. */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
+/* --- STAR RATING DISPLAY (Task Styling) --- */
+#rating-display-area {
+    background-color: #ffffff; /* Contrast against the cream body */
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+#star-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap; /* Safety for mobile */
+}
+
+#star-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Reduced gap to save space */
+    flex-wrap: nowrap; /* Forces them to stay on one line */
+    overflow-x: auto;  /* Adds a scrollbar ONLY if the screen is tiny */
+    padding: 10px;
+}
+
+.star-img {
+    /* Adjust this size if they still feel too big for one row */
+    width: 80px; 
+    height: auto;
+    flex-shrink: 0; /* Prevents the browser from squishing the stars */
+}
+
+.star-count {
+    font-size: 0.8rem;
+    color: #8B4513;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* ANIMATION LOGIC: Makes stars "grow" into place */
+@keyframes starPop {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- PRODUCT SECTION SPACING --- */
+.product-section {
+    /* This adds space INSIDE the section, pushing the text away from the edge */
+    padding-left: 50px; 
+    
+    /* This adds space above and below the whole section for better breathing room */
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    /* This targets the "Best Sellers" and "Pet Essentials" text specifically */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    color: #8B4513; /* Matching your brand brown */
+    margin-bottom: 20px;
 }
 
 
@@ -296,6 +353,32 @@ body {
         width: 100%;
         min-width: unset;
     }
+}
+/* --- PRODUCT GRID SYSTEM --- */
+.product-list {
+    display: grid;
+    /* This creates a responsive grid: 
+       Items will be at least 250px wide. 
+       If there's room, they'll sit side-by-side. 
+       If not, they'll stack. */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    width: 100%;
+    /* This ensures the grid respects your left padding */
+    max-width: 1200px;
+}
+
+.product-item {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    /* This centers the item inside its grid cell */
+    margin: 0 auto; 
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #E0DEDC;
 }
 
 /* --- INTERACTIVE PRODUCT HOVER --- */
