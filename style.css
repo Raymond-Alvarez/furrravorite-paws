@@ -425,3 +425,56 @@ footer {
     /* This ensures the footer takes up the full width of the screen. */
     width: 100%;
 }
+
+/* --- KEEP ALL YOUR ORIGINAL CSS ABOVE THIS --- */
+
+/* 🎯 THE LOVED ELEMENTS STYLING */
+#rating-display-area {
+    text-align: center;
+    padding: 30px 20px;
+    background: transparent; /* Makes the white box stay away */
+}
+
+#star-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.star-img {
+    width: 60px; /* Adjust size to your preference */
+    height: auto;
+}
+
+#rating-message {
+    font-weight: 600;
+    color: #8B4513;
+    margin-top: 15px;
+}
+
+/* THE BUTTON */
+.fashion-btn {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    color: #4a4a4a;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s ease;
+}
+
+.fashion-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 154, 158, 0.4);
+}
+
+#game-status-message {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
