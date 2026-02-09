@@ -1,9 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; URL='home.html'" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furrravorite Paws | Chic Pet Accessories</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <p>If you are not redirected automatically, <a href="home.html">click here</a>.</p>
+
+    <header class="main-header">
+        <div class="header-left-group">
+            <div class="menu-icon" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <img src="image/furrravorite-paws-logo.png" alt="Logo" class="header-logo">
+        </div>
+
+        <h1 class="brand-name">FURRRAVORITE PAWS</h1>
+
+        <a href="cart.html" class="cart-icon">🛒 <span id="cart-count">(0)</span></a>
+        
+        <nav class="main-nav" id="nav-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#shop">Shop</a></li>
+                <li><a href="discount.html">Games</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="cohort-link">
+            <a href="https://erojascornenejo10-tech.github.io/the-boxing-zone/boxing.html" target="_blank">
+                &lt;--- Check out my fellow student's awesome work! ---&gt;
+            </a>
+        </div>
+
+        <div id="game-trigger-area">
+            <a href="discount.html" style="text-decoration: none;">
+                <button id="discount-btn" class="fashion-btn">Win a Discount!</button>
+            </a>
+        </div>
+
+        <div class="hero-flex-container"> 
+            <section class="hero-section">
+                <h2 class="hero-title">Chic Accessories <br>for Pets</h2>
+                <a href="#shop" class="shop-now-btn">Shop Now</a>
+            </section>
+
+            <div id="subscription-form-container">
+                <h3>Join the Newsletter</h3>
+                <p>Get treats and discounts delivered to your inbox.</p>
+                <div class="email-input-group">
+                    <input type="email" id="userEmail" placeholder="Enter your email...">
+                    <button id="subscribe-btn" onclick="handleSubscription()">Subscribe</button>
+                </div>
+            </div>
+        </div> 
+
+        <section class="product-section" id="shop">
+            <h2 class="section-title">Our Collection</h2>
+            <div class="product-list">
+                <p>Loading the warehouse...</p>
+            </div>
+        </section>
+    </main> 
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> Furrravorite Paws</p>
+    </footer>
+
+    <button id="backToTop">↑</button>
+
+    <script src="app.js"></script>
 </body>
 </html>

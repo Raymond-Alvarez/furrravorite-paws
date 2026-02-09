@@ -1,10 +1,5 @@
-/* --- THE FOUNDATION (Global Reset) --- */
-/* The '*' is the universal selector. It clears out default browser settings 
-   that often cause unexpected gaps or sizing issues. */
+/* --- THE FOUNDATION --- */
 * {
-    /* 'box-sizing: border-box' ensures that padding and borders are calculated 
-       INSIDE the width you set. It's like measuring a suitcase from the 
-       outside—the contents don't change the size of the bag. */
     box-sizing: border-box; 
     margin: 0;
     padding: 0;
@@ -12,469 +7,251 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #F7F4F0; /* Soft cream/bone color for a premium feel */
+    background-color: #F7F4F0; 
     color: #333333;
-    /* 'overflow-x: hidden' prevents the screen from shaking or scrolling 
-       sideways if an element accidentally pokes off the edge. */
-    overflow-x: hidden;
+    line-height: 1.6;
 }
 
-/* --- THE HEADER (Top Bar Layout) --- */
-/* Flexbox makes it easy to align the logo, brand name, and cart in a row. */
+/* --- THE HEADER --- */
 .main-header {
     display: flex;
-    /* Vertically centers everything in the bar (hamburger, logo, and cart). */
     align-items: center;
     padding: 15px 20px;
-    
-    /* Layering logic: border + shadow makes the header "pop" off the page. */
+    background-color: #fff;
     border-bottom: 1px solid #E0DEDC;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-    
-    /* z-index: 1001 ensures the header stays on top of images when scrolling. */
-    z-index: 1001;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-/* Logic: We group the Hamburger and Logo so they stay together on the left. */
 .header-left-group {
     display: flex;
     align-items: center;
-    gap: 50px; /* Space between the hamburger menu and your logo. */
-    flex: 1;   /* Takes up 1/4th of the header width. */
+    gap: 20px; 
+    flex: 1;   
 }
 
 .header-logo {
-    height: 100px;
-    width: 100px;
-    /* 'object-fit: contain' ensures your logo isn't squished or stretched. */
-    object-fit: contain;
-    /* Prepares the logo for the 'Spin' animation. */
-    transition: transform 0.8s ease-in-out;
+    height: 60px;
+    transition: transform 0.3s ease;
 }
 
 .brand-name {
-    flex: 2; /* Takes up 2/4th of the space, forcing it to the center. */
+    flex: 2; 
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    
-    /* CLAMP LOGIC: (Minimum size, Dynamic size, Maximum size). 
-       The font shrinks and grows automatically based on the screen width. */
-    font-size: clamp(1.5rem, 4vw, 3.5rem); 
-    
-    white-space: nowrap; /* Prevents the name from breaking into two lines. */
+    font-size: clamp(1rem, 3vw, 2rem);
 }
 
 .cart-icon {
-    flex: 1; /* Balances the right side with the left side. */
+    flex: 1;
     text-align: right;
-    font-size: 1.8rem;
     text-decoration: none;
-    cursor: pointer; 
+    color: #333;
+    font-weight: bold;
 }
 
-/* --- BANNER & GREETING --- */
-.cohort-link {
-    text-align: center;
-    padding: 15px 0;
-    margin: 10px 0;
-    border: 2px dashed #8B4513; /* 'Dashed' creates a vintage coupon look. */
-    background-color: #F0F0F0;
-}
-
-.cohort-link a {
-    color: #1e90ff !important; /* Forces the link to be brand blue. */
-    font-weight: 700;
-}
-
-#greeting-container {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-/* --- MOBILE MENU ANIMATION --- */
-/* The burger icon is a 'Flex Column' to stack the 3 <span> lines. */
-.menu-icon {
-    display: flex;
-    flex-direction: column; 
-    gap: 5px; 
-    cursor: pointer;
+/* --- NAVIGATION --- */
+.main-nav {
+    display: none; /* Mobile hidden by default */
 }
 
 .menu-icon span {
+    display: block;
     width: 25px;
     height: 3px;
-    background-color: #333;
-    /* 'cubic-bezier' adds a 'bounce' effect when the lines move. */
-    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    background: #333;
+    margin: 5px 0;
 }
 
-/* TRANSFORM LOGIC: When the menu is clicked, the 3 lines rotate to form an 'X'. */
-.menu-icon.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-.menu-icon.active span:nth-child(2) { opacity: 0; } /* Hides the middle line. */
-.menu-icon.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-/* The actual menu list container. */
-.main-nav {
-    display: none; /* Hidden by default until JS toggles the '.active' class. */
-    position: absolute; /* Floats over the rest of your content. */
-    top: 100%; 
-    left: 0;
-    width: 100%;
-    background-color: #F7F4F0;
-    padding: 30px 0;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-}
-
-.main-nav.active { display: block; } /* Shows the menu when activated. */
-
-/* --- MENU LINK INTERACTION --- */
-/* This controls the styling of the links (Shop, About, etc.) inside the menu. */
-.main-nav a {
-    display: block;
-    padding: 15px 20px;
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    /* transition: This is the 'slow-motion' glue that makes hovers look smooth. */
-    transition: all 0.3s ease;
-}
-
-/* HOVER STATE: This activates when your mouse cursor sits on top of a link. */
-.main-nav a:hover {
-    background-color: #F0EDE9; /* Subtle change to show which link is selected. */
-    color: #1e90ff;            /* Turns the text blue on hover. */
-    padding-left: 30px;        /* Creates a 'slide-right' animation. */
-}
-
-/* ACTIVE STATE: This activates the split-second you click/press the link. */
-.main-nav a:active {
-    background-color: #E0DEDC; /* Darkens the background during the click. */
-    transform: scale(0.98);    /* Shrinks the text slightly to feel like a real button press. */
-}
-
-/* --- HERO & NEWSLETTER LAYOUT --- */
-/* Flexbox splits the screen into Text (Left) and Form (Right). */
+/* --- HERO & NEWSLETTER FLEX --- */
 .hero-flex-container {
     display: flex;
-    justify-content: space-between; 
-    align-items: flex-start;
-    padding: 60px 20px;
+    flex-wrap: wrap;
+    gap: 30px;
     max-width: 1200px;
-    margin: 0 auto; 
-    gap: 40px;
+    margin: 40px auto;
+    padding: 0 20px;
+    align-items: flex-start; /* Keeps the top of both boxes aligned */
 }
 
-.hero-section { flex: 2; } 
-
-.hero-title { 
-    font-family: 'Poppins', sans-serif; 
-    font-size: 2.5rem; 
-    margin-bottom: 50px; 
-    line-height: 1.1; /* Keeps lines close together for a bold, modern look. */
+.hero-section {
+    flex: 1.5;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Consistent styling for all primary action buttons. */
-.shop-now-btn, #subscribe-btn {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: #1e90ff;
-    color: white;
-    font-weight: bold;
-    border-radius: 4px; 
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
+.hero-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.2;
+    color: #2c3e50;
+    margin: 0;
 }
 
 #subscription-form-container {
     flex: 1;
-    min-width: 320px;
-    padding: 30px;
-    border: 1px solid #CFCFCE;
+    min-width: 300px;
+    background: #ffffff;
+    padding: 25px;
     border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
-}
-
-#subscription-form-container h3 { margin-bottom: 15px; }
-#subscription-form-container p { margin-bottom: 20px; }
-
-.email-input-group {
-    display: flex;
-    flex-wrap: wrap; /* Stacks the email box and button on small phone screens. */
-    gap: 20px; 
-    margin-top: 15px;
-}
-
-#userEmail { 
-    flex: 1 1 250px; 
-    padding: 15px; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
-}
-
-/* --- STAR RATING DISPLAY (Task Styling) --- */
-#rating-display-area {
-    background-color: #ffffff; /* Contrast against the cream body */
-    padding: 30px;
-    margin: 20px auto;
-    max-width: 600px;
-    border-radius: 12px;
+    border: 1px solid #E0DEDC;
+    align-self: flex-start; /* Fix: Newsletter won't stretch to hero height */
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-#star-container {
+.email-input-group {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap; /* Safety for mobile */
-}
-
-#star-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px; /* Reduced gap to save space */
-    flex-wrap: nowrap; /* Forces them to stay on one line */
-    overflow-x: auto;  /* Adds a scrollbar ONLY if the screen is tiny */
-    padding: 10px;
-}
-
-.star-img {
-    /* Adjust this size if they still feel too big for one row */
-    width: 80px; 
-    height: auto;
-    flex-shrink: 0; /* Prevents the browser from squishing the stars */
-}
-
-.star-count {
-    font-size: 0.8rem;
-    color: #8B4513;
-    font-weight: bold;
-    margin-top: 5px;
-}
-
-/* ANIMATION LOGIC: Makes stars "grow" into place */
-@keyframes starPop {
-    0% { transform: scale(0); opacity: 0; }
-    80% { transform: scale(1.2); }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-/* --- PRODUCT SECTION SPACING --- */
-.product-section {
-    /* This adds space INSIDE the section, pushing the text away from the edge */
-    padding-left: 50px; 
-    
-    /* This adds space above and below the whole section for better breathing room */
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-
-.section-title {
-    /* This targets the "Best Sellers" and "Pet Essentials" text specifically */
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.8rem;
-    color: #8B4513; /* Matching your brand brown */
-    margin-bottom: 20px;
-}
-
-
-
-.product-image {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 50%; /* Makes the product photos perfect circles. */
-    border: 2px solid #8B4513;
-    margin-bottom: 15px;
-}
-
-/* --- SPECIAL EFFECTS --- */
-@keyframes logoSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* SIBLING LOGIC: If I hover the menu OR the logo itself, trigger the spin. */
-.header-logo:hover, #hamburger-menu:hover ~ .header-logo {
-    animation: logoSpin 0.8s ease-in-out;
-}
-
-#backToTop {
-    display: none; /* Hidden until the user scrolls down (controlled by JS). */
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #1e90ff;
-    color: white; 
-    border: none;
-    cursor: pointer;
-    border-radius: 50%; 
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-/* --- RESPONSIVE DESIGN (Tablets & Phones) --- */
-/* This section triggers when the screen width is 768px or less. */
-@media (max-width: 768px) {
-    .header-logo {
-        height: 60px; /* Shrinks logo so it doesn't crowd the phone screen. */
-        width: 60px;
-    }
-
-    .header-left-group {
-        gap: 20px;
-    }
-
-    .brand-name { 
-        font-size: 1.8rem;
-        white-space: normal; /* Allows the title to wrap to 2 lines on small phones. */
-        line-height: 1.2;
-    }
-
-    .hero-flex-container {
-        flex-direction: column; /* Stacks the hero text and the newsletter form vertically. */
-        text-align: center;
-        padding: 40px 20px;
-    }
-
-    .hero-title { 
-        font-size: 2.2rem;
-        margin-bottom: 30px;
-    }
-
-    #subscription-form-container {
-        width: 100%;
-        min-width: unset;
-    }
-}
-/* --- PRODUCT GRID SYSTEM --- */
-.product-list {
-    display: grid;
-    /* This creates a responsive grid: 
-       Items will be at least 250px wide. 
-       If there's room, they'll sit side-by-side. 
-       If not, they'll stack. */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    padding: 20px;
-    width: 100%;
-    /* This ensures the grid respects your left padding */
-    max-width: 1200px;
-}
-
-.product-item {
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
-    /* This centers the item inside its grid cell */
-    margin: 0 auto; 
-    width: 100%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #E0DEDC;
-}
-
-/* --- INTERACTIVE PRODUCT HOVER --- */
-.product-item {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    /* transition: Controls how fast the 'lift' and 'shadow' appear. */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
-    cursor: pointer;
-}
-
-.product-item:hover {
-    /* translateY(-10px): Lifts the product card up by 10 pixels. */
-    transform: translateY(-10px); 
-    /* Spreads the shadow out to make the item look like it's hovering. */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15); 
-}
-
-/* --- THE FOOTER (The Bottom of the Page) --- */
-
-footer {
-    /* 'text-align: center' makes sure the copyright text is perfectly in the middle. */
-    text-align: center;
-    
-    /* 'padding' adds breathing room inside the footer so the text doesn't 
-       look cramped. 50px on top/bottom creates that nice "lower" look you want. */
-    padding: 50px 20px;
-    
-    /* This adds a thin, soft line above the footer to separate it 
-       from your products. */
-    border-top: 1px solid #E0DEDC;
-    
-    /* We match the background to the rest of the site's "bone" color. */
-    background-color: #F7F4F0;
-    
-    /* A softer grey color for the text so it doesn't distract from the main shop. */
-    color: #777777;
-    
-    /* Slightly smaller font size for a professional look. */
-    font-size: 0.9rem;
-    
-    /* This ensures the footer takes up the full width of the screen. */
-    width: 100%;
-}
-
-/* --- KEEP ALL YOUR ORIGINAL CSS ABOVE THIS --- */
-
-/* 🎯 THE LOVED ELEMENTS STYLING */
-#rating-display-area {
-    text-align: center;
-    padding: 30px 20px;
-    background: transparent; /* Makes the white box stay away */
-}
-
-#star-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.star-img {
-    width: 60px; /* Adjust size to your preference */
-    height: auto;
-}
-
-#rating-message {
-    font-weight: 600;
-    color: #8B4513;
+    flex-direction: column;
+    gap: 12px;
     margin-top: 15px;
 }
 
-/* THE BUTTON */
+#userEmail {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* --- PRODUCT GRID --- */
+.product-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.product-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #E0DEDC;
+    transition: 0.3s;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.product-image {
+    width: 100%;
+    max-width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+/* --- BUTTONS --- */
+.shop-now-btn, #subscribe-btn, .fashion-btn {
+    display: inline-block;
+    background-color: #1e90ff;
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+.shop-now-btn { width: fit-content; }
+
 .fashion-btn {
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-    color: #4a4a4a;
+    color: #444;
+}
+
+.cohort-link {
+    background: #fdfaf6;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+#game-trigger-area {
+    text-align: center;
+    margin: 30px 0;
+}
+
+footer {
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid #E0DEDC;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .hero-flex-container {
+        flex-direction: column;
+    }
+    .hero-section {
+        align-items: center;
+        text-align: center;
+    }
+}
+.checkout-grid {
+    display: flex;
+    gap: 50px;
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.shipping-form { flex: 2; }
+.order-summary { 
+    flex: 1; 
+    background: #fff; 
+    padding: 20px; 
+    border-radius: 12px;
+    border: 1px solid #E0DEDC;
+    height: fit-content;
+}
+
+.form-row { display: flex; gap: 10px; }
+.shipping-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.remove-item-btn {
+    background: #f7f4f0;
+    color: #ff4757;
     border: none;
-    padding: 12px 25px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 50px;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s ease;
-}
-
-.fashion-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(255, 154, 158, 0.4);
-}
-
-#game-status-message {
-    margin-top: 10px;
-    font-size: 0.9rem;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.remove-item-btn:hover {
+    background: #ff4757;
+    color: white;
+    transform: scale(1.1);
 }

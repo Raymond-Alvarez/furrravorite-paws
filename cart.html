@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | Furrravorite Paws</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: #fcfaf8;">
+
+        <header class="main-header">
+            <div class="header-left-group">
+                <a href="index.html" class="back-btn">⬅ Back</a>
+            </div>
+            
+            <h1 class="brand-name">YOUR SHOPPING CART</h1>
+            
+            <div class="header-right-spacer" style="flex: 1;"></div> 
+        </header>
+
+    <main class="cart-container">
+        <div id="cart-items-list">
+            </div>
+
+        <div class="cart-summary" id="cart-summary-area">
+            </div>
+
+        <div style="text-align: right; margin-top: 20px;">
+            <button class="checkout-btn" onclick="processCheckout()">Complete Purchase</button>
+        </div>
+    </main>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('savedCart')) || [];
+        const activeDiscount = parseFloat(localStorage.getItem('activeDiscount')) || 0;
+
+        function renderCart() {
+            const listContainer = document.getElementById('cart-items-list');
+            const summaryArea = document.getElementById('cart-summary-area');
+            
+            if (cart.length === 0) {
+                listContainer.innerHTML = "<p style='text-align:center; padding: 40px;'>Your cart is empty!</p>";
+                summaryArea.innerHTML = "<h3>Total: $0.00</h3>";
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                subtotal += item.price;
+                listContainer.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; border-radius: 10px; object-fit: cover;">
+                        <div style="flex: 1; margin-left: 20px;">
+                            <h3 style="margin:0;">${item.name}</h3>
+                            <p style="margin:5px 0; color:#666;">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+                    </div>
+                `;
+            });
+
+            const savings = subtotal * activeDiscount;
+            const finalTotal = subtotal - savings;
+
+            summaryArea.innerHTML = `
+                <p>Subtotal: $${subtotal.toFixed(2)}</p>
+                ${savings > 0 ? `<p style="color:green; font-weight:bold;">Lucky Paw Discount (20%): -$${savings.toFixed(2)}</p>` : ''}
+                <hr style="border:0; border-top:1px solid #eee; margin: 10px 0;">
+                <h2 style="margin-top:10px;">Grand Total: $${finalTotal.toFixed(2)}</h2>
+            `;
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('savedCart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function processCheckout() {
+            if (cart.length === 0) return alert("Your cart is empty!");
+            alert("Order Confirmed! Your pet thanks you. 🐾");
+            localStorage.removeItem('savedCart');
+            localStorage.removeItem('activeDiscount');
+            window.location.href = 'index.html';
+        }
+
+        renderCart();
+    </script>
+</body>
+</html>

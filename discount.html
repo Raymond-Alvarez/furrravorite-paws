@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Treat! | Furrravorite Paws</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@900&display=swap" rel="stylesheet">
+    <style>
+        .game-body {
+            background: linear-gradient(135deg, #e0f7fa 0%, #81d4fa 100%);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- THE ANIMATED BACKGROUND SYSTEM --- */
+        #item-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; 
+            pointer-events: none; /* Crucial: Clicks pass through to the balls */
+        }
+
+        .floating-item {
+            position: absolute;
+            user-select: none;
+            opacity: 0.6;
+            animation: floatSlow linear infinite;
+        }
+
+        @keyframes floatSlow {
+            from { transform: translateY(110vh) rotate(0deg) translateX(0); }
+            to { transform: translateY(-20vh) rotate(360deg) translateX(50px); }
+        }
+
+        /* --- UI ELEMENTS --- */
+        .game-title, .instruction-box, .ball-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .game-title {
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            font-size: clamp(2.5rem, 10vw, 4.5rem);
+            text-shadow: 4px 4px 0px #1e90ff, 8px 8px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .instruction-box {
+            background: rgba(255,255,255,0.8);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            color: #0277bd;
+            margin-bottom: 40px;
+        }
+
+        .ball-container {
+            display: flex;
+            gap: 40px;
+        }
+
+        /* --- BOUNCY TENNIS BALL --- */
+        .tennis-ball {
+            width: 140px;
+            height: 140px;
+            background: #ccff00;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2), inset -15px -15px 30px rgba(0,0,0,0.2);
+            cursor: pointer;
+            position: relative;
+            z-index: 20; 
+            animation: hyperBounce 2.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            transition: transform 0.2s ease;
+        }
+
+        .tennis-ball:hover {
+            filter: brightness(1.1);
+        }
+
+        @keyframes hyperBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            45% { transform: translateY(-120px) scale(0.95); } 
+            95% { transform: translateY(0) scale(1.1, 0.8); } 
+        }
+
+        .tennis-ball:nth-child(2) { animation-delay: 0.15s; }
+        .tennis-ball:nth-child(3) { animation-delay: 0.3s; }
+
+        /* --- RESULT OVERLAY --- */
+        #game-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(5px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Corner decorations */
+        .corner-animal {
+            position: absolute;
+            width: 250px;
+            z-index: 5;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+            pointer-events: none;
+        }
+        .bottom-left { bottom: -20px; left: -20px; transform: rotate(10deg); }
+        .bottom-right { bottom: -20px; right: -20px; transform: rotate(-10deg); }
+
+        .confetti {
+            position: absolute;
+            width: 12px; height: 12px;
+            z-index: 100;
+            animation: confettiFall 4s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--x), 100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="game-body">
+
+    <div id="item-layer"></div>
+
+    <audio id="sfx-win" src="https://actions.google.com/sounds/v1/animals/dog_barking.ogg"></audio>
+    <audio id="sfx-lose" src="https://actions.google.com/sounds/v1/foley/whimper.ogg"></audio>
+
+    <h1 class="game-title">WHICH BALL<br>HAS THE TREAT?</h1>
+    <div class="instruction-box">Win 20% OFF your entire order! 🦴</div>
+
+    <div class="ball-container">
+        <div class="tennis-ball" onclick="checkBall(0)"></div>
+        <div class="tennis-ball" onclick="checkBall(1)"></div>
+        <div class="tennis-ball" onclick="checkBall(2)"></div>
+    </div>
+
+    <div id="game-overlay">
+        <h2 id="overlay-msg" style="font-size: clamp(2rem, 8vw, 5rem); font-family: 'Poppins';"></h2>
+        <p id="overlay-sub" style="font-size: 1.5rem; margin-bottom: 30px; font-weight: bold;"></p>
+        
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
+            <button class="fashion-btn" onclick="window.location.href='index.html'" style="padding: 15px 30px;">Back to Store</button>
+            <button id="retry-btn" class="fashion-btn" onclick="resetGame()" style="padding: 15px 30px; display: none; background: #ffc107;">Try Again 🎾</button>
+            <button id="checkout-btn-win" class="shop-now-btn" onclick="window.location.href='checkout.html'" style="padding: 15px 30px; display: none;">Go to Checkout</button>
+        </div>
+    </div>
+
+    <img src="http://googleusercontent.com/image_collection/image_retrieval/1926351121672189908_0" class="corner-animal bottom-left" alt="puppy">
+    <img src="http://googleusercontent.com/image_collection/image_retrieval/1926351121672189908_2" class="corner-animal bottom-right" alt="kitten">
+
+    <script src="discount.js"></script>
+</body>
+</html>

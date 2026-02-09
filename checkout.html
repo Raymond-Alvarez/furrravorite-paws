@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Furrravorite Paws</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1 class="brand-name">FURRRAVORITE PAWS</h1>
+        <a href="index.html" style="text-decoration:none; color:#1e90ff;">← Back to Shop</a>
+    </header>
+
+    <main class="checkout-container">
+        <div class="checkout-grid">
+            <section class="shipping-form">
+                <h2>Shipping Information</h2>
+                <form id="order-form">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" id="checkout-email" placeholder="Email Address" required>
+                    <input type="text" placeholder="Street Address" required>
+                    <div class="form-row">
+                        <input type="text" placeholder="City" required>
+                        <input type="text" placeholder="Zip Code" required>
+                    </div>
+                    <button type="submit" class="shop-now-btn" style="width:100%; margin-top:20px;">Complete Purchase</button>
+                </form>
+            </section>
+
+            <section class="order-summary">
+                <h2>Your Order</h2>
+                <div id="checkout-items">
+                    </div>
+                <hr>
+                <div class="totals">
+                    <p>Subtotal: <span id="subtotal">$0.00</span></p>
+                    <p>Shipping: <span id="shipping-cost">FREE</span></p>
+                    <p><strong>Total: <span id="final-total">$0.00</span></strong></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="checkout.js"></script>
+</body>
+</html>
